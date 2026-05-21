@@ -36,7 +36,7 @@ export function shuffle<T>(items: T[], random: () => number): T[] {
 export function compactText(value: string) {
   return value
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/[^a-z0-9\s]/gi, " ")
     .split(/\s+/)
     .filter((word) => word.length > 3);
 }
