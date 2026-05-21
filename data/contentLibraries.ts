@@ -589,7 +589,7 @@ export const funnelSequences: Record<Goal, FunnelPhase[]> = {
   engagement: ["awareness", "engagement", "valore", "engagement", "fiducia", "prova sociale", "engagement"]
 };
 
-export const funnelPatterns: FunnelPhase[][] = [
+const baseFunnelPatterns: FunnelPhase[][] = [
   ["awareness", "valore", "fiducia", "engagement", "prova sociale", "vendita"],
   ["awareness", "engagement", "valore", "fiducia", "vendita", "prova sociale"],
   ["valore", "awareness", "fiducia", "engagement", "prova sociale", "vendita"],
@@ -605,9 +605,11 @@ export const funnelPatterns: FunnelPhase[][] = [
   ["valore", "engagement", "awareness", "fiducia", "prova sociale", "vendita"],
   ["awareness", "valore", "prova sociale", "fiducia", "engagement", "vendita"],
   ["fiducia", "valore", "engagement", "awareness", "prova sociale", "vendita"]
-].flatMap((pattern) => [
+];
+
+export const funnelPatterns: FunnelPhase[][] = baseFunnelPatterns.flatMap((pattern): FunnelPhase[][] => [
   pattern,
-  [...pattern.slice(1), pattern[0]],
+  [...pattern.slice(1), ...pattern.slice(0, 1)],
   [...pattern.slice(2), ...pattern.slice(0, 2)],
   [...pattern.slice(3), ...pattern.slice(0, 3)]
 ]);
