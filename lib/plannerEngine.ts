@@ -67,6 +67,10 @@ function phaseExclusions(memory: UsedMemory, previous?: PlannedDay, hardExclusio
   ];
 }
 
+function unique<T>(items: T[]): T[] {
+  return Array.from(new Set(items));
+}
+
 function publishingSlots(input: PlannerInput) {
   const publishDays = publishByFrequency[input.frequency];
   return Array.from({ length: input.duration }, (_, dayIndex) => publishDays.includes(dayIndex % 7));
@@ -88,15 +92,15 @@ function buildDay(
   hardExclusions?: UsedMemory
 ): PlannedDay {
   const objective = choosePhase(input, dayIndex, random, previous?.objective, phaseExclusions(memory, previous, hardExclusions));
-  const recentFormats = [...new Set([...recent(memory.formats, 80), ...(hardExclusions?.formats ?? [])])];
-  const recentStrategies = [...new Set([...recent(baseStrategyExclusions(memory), 60), ...baseStrategyExclusions(hardExclusions ?? memory)])];
-  const recentAngles = [...new Set([...recent(baseAngleExclusions(memory), 60), ...baseAngleExclusions(hardExclusions ?? memory)])];
-  const recentCtas = [...new Set([...recent(memory.ctas, 60), ...(hardExclusions?.ctas ?? [])])];
-  const recentHooks = [...new Set([...recent(memory.hooks, 60), ...(hardExclusions?.hooks ?? [])])];
-  const recentTypes = [...new Set([...recent(memory.contentTypes, 60), ...(hardExclusions?.contentTypes ?? [])])];
-  const recentMaterials = [...new Set([...recent(memory.materials, 80), ...(hardExclusions?.materials ?? [])])];
-  const recentActions = [...new Set([...recent(memory.actions, 60), ...(hardExclusions?.actions ?? [])])];
-  const recentTips = [...new Set([...recent(memory.quickTips, 50), ...(hardExclusions?.quickTips ?? [])])];
+  const recentFormats = unique([...recent(memory.formats, 80), ...(hardExclusions?.formats ?? [])]);
+  const recentStrategies = unique([...recent(baseStrategyExclusions(memory), 60), ...baseStrategyExclusions(hardExclusions ?? memory)]);
+  const recentAngles = unique([...recent(baseAngleExclusions(memory), 60), ...baseAngleExclusions(hardExclusions ?? memory)]);
+  const recentCtas = unique([...recent(memory.ctas, 60), ...(hardExclusions?.ctas ?? [])]);
+  const recentHooks = unique([...recent(memory.hooks, 60), ...(hardExclusions?.hooks ?? [])]);
+  const recentTypes = unique([...recent(memory.contentTypes, 60), ...(hardExclusions?.contentTypes ?? [])]);
+  const recentMaterials = unique([...recent(memory.materials, 80), ...(hardExclusions?.materials ?? [])]);
+  const recentActions = unique([...recent(memory.actions, 60), ...(hardExclusions?.actions ?? [])]);
+  const recentTips = unique([...recent(memory.quickTips, 50), ...(hardExclusions?.quickTips ?? [])]);
   const format = chooseDistinct(
     weightedFormats(input, random).filter((item) => item !== previous?.format),
     random,

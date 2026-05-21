@@ -7,8 +7,10 @@ export function textSimilarity(first: string, second: string) {
     return 0;
   }
 
-  const intersection = [...a].filter((word) => b.has(word)).length;
-  const union = new Set([...a, ...b]).size;
+  const wordsA = Array.from(a);
+  const wordsB = Array.from(b);
+  const intersection = wordsA.filter((word) => b.has(word)).length;
+  const union = new Set(wordsA.concat(wordsB)).size;
   return intersection / union;
 }
 
